@@ -1,0 +1,57 @@
+<!--
+---
+permalink: /new-set
+---
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" media="screen and (min-width: 901px)" href="../CSS/desktop.css" />
+    <link rel="stylesheet" media="screen and (max-width: 900px)" href="../CSS/mobile.css" />
+    
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+
+    <div id="header">
+        <h1 id="title">Cards</h1>
+    </div>
+
+    <div id="main">
+        <div id="new-set-form-div">
+            <h1>New Card Set</h1>
+            
+            <input placeholder="Set Name">              
+        
+            <textarea  placeholder="Set Description..."></textarea>
+        
+            <button onclick="clickedCreate()"> <p>Create This Set</p> </button>
+        </div>
+    </div>
+    
+    
+    <script src="../JS/LocalStorageDB.js"></script>
+    
+    <script>
+        var db = new LocalStorageDB()
+
+        function clickedCreate(){
+            var setName = document.querySelector('input').value;
+            var setDesc = document.querySelector('textarea').value;
+            
+            var ID = db.addSet(setName, setDesc)
+
+            var url = "../set/set.html?name=" + ID
+            window.location.assign(url);
+        }    
+    </script>
+
+
+</body>
+
+</html>
