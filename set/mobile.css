@@ -1,0 +1,5 @@
+#top-area {grid-template-rows: 1fr 2fr 1fr; grid-auto-rows: min-content;}
+
+
+#card-grid { width: 100%; }
+.card-element, #add-button { width: 90%; }

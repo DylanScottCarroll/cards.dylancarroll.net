@@ -1,0 +1,5 @@
+#top-area {grid-template-columns: 2fr 5fr 200px;}
+
+
+#card-grid { width: 100%; padding: 20px;}
+.card-element, #add-button { width: 70%; }

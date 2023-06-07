@@ -10,8 +10,12 @@ permalink: /set
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" media="screen and (min-width: 901px)" href="../CSS/desktop.css" />
     <link rel="stylesheet" media="screen and (max-width: 900px)" href="../CSS/mobile.css" />
-    
     <link rel="stylesheet" href="../CSS/style.css">
+    
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" media="screen and (min-width: 901px)" href="./desktop.css">
+    <link rel="stylesheet" media="screen and (max-width: 900px)" href="./mobile.css">
+
 </head>
 
 <body>
@@ -21,22 +25,68 @@ permalink: /set
     </div>
 
     <div id="main">
-        <h2 id="set-name"></h2>
+        <div id="top-area">
+            <h2 id="set-name"></h2>
+            <div id="set-desc-div">
+                <p id="set-desc"></p>
+            </div>
+            <button id="study-button" onclick="clickedStudy()"> <p>Study This Set</p> </button>
+        </div>
 
-        <button onclick="clickedStudy()"> <p>Study This Set</p> </button>
+        <div id="card-grid">
+
+            <button id="add-button" onclick="clickedAddButton()"> <p>Add Card</p> </button>
+        </div>
+
     </div>
 
-    
+    <script src="../JS/LocalStorageDB.js"></script>
+    <script src="./card-element.js"></script>
     <script>
+        var db = new LocalStorageDB()
+
         var params = new URLSearchParams(window.location.search);
-        var setName = params.get('name');
-        console.log(setName); 
-        document.getElementById('set-name').textContent = setName
+        var set = db.getSetByID(params.get('ID'));
         
+        console.log(set); 
+        document.getElementById('set-name').textContent = set.name
+        document.getElementById('set-desc').textContent = set.description
+        
+        addCards()
+
+        function addCards(){
+            const insertPos = document.getElementById("add-button");
+
+            var cardList = db.getCardsOfSet(set.ID)
+            for(let i = 0; i < cardList.length; i++){
+                var newElement = newCardElement(cardList[i])
+                insertPos.parentNode.insertBefore(newElement, insertPos);
+            }
+        }
+
         function clickedStudy(){
-            var url = "../study-set/study-set.html?name=" + encodeURIComponent(setName)
+            var url = "../study-set/study-set.html?ID=" + set.ID
             window.location.assign(url);
-        }    
+        }
+
+        function editCard(button, ID){
+            console.log(button, ID)
+        }
+
+        
+        function deleteCard(button, ID){
+            console.log(button, ID)
+        }
+
+        function finishEditCard(button, ID){
+
+        }
+
+        function cancelEditCard(button, ID){
+
+        }
+
+
     </script>
 
 </body>
