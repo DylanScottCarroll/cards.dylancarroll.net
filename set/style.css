@@ -29,3 +29,7 @@
 .card-buttons > button {padding: 0px; background-color: rgba(0, 0, 0, 0);}
 
 #add-button {aspect-ratio: 3 / 1; margin-left: auto; margin-right: auto;}
+
+#set-button-container {display: grid; gap: 20px; grid-auto-rows: min-content;} /* desktop/mobile*/ 
+
+#study-button, #delete-set-button {line-height: 0px; height: auto; margin: 5px;}

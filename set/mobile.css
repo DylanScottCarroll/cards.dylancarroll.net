@@ -3,3 +3,5 @@
 
 #card-grid { width: 100%; }
 .card-element, #add-button { width: 90%; }
+
+#set-button-container {grid-template-columns: 1fr 1fr;} /* desktop/mobile*/ 

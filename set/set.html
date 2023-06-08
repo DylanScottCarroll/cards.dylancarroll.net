@@ -30,11 +30,13 @@ permalink: /set
             <div id="set-desc-div">
                 <p id="set-desc"></p>
             </div>
-            <button id="study-button" onclick="clickedStudy()"> <p>Study This Set</p> </button>
+            <div id = "set-button-container">
+                <button id="study-button" onclick="clickedStudy()"> <p>Study This Set</p> </button>
+                <button id="delete-set-button" onclick="deleteSet()"> <p>Delete This Set</p> </button>
+            </div>
         </div>
 
         <div id="card-grid">
-
             <button id="add-button" onclick="clickedAddButton()"> <p>Add Card</p> </button>
         </div>
 
@@ -48,20 +50,26 @@ permalink: /set
         var params = new URLSearchParams(window.location.search);
         var set = db.getSetByID(params.get('ID'));
         
-        console.log(set); 
         document.getElementById('set-name').textContent = set.name
         document.getElementById('set-desc').textContent = set.description
         
         addCards()
 
         function addCards(){
-            const insertPos = document.getElementById("add-button");
-
             var cardList = db.getCardsOfSet(set.ID)
             for(let i = 0; i < cardList.length; i++){
-                var newElement = newCardElement(cardList[i])
-                insertPos.parentNode.insertBefore(newElement, insertPos);
+                addOneCard(cardList[i], document.getElementById("add-button"))
             }
+        }
+
+        function addOneCard(card, insertPos){
+            var newElement = newCardElement(card)
+            insertPos.parentNode.insertBefore(newElement, insertPos);
+        }
+
+        function addOneEditCard(card, insertPos){
+            var newElement = newEditCardElement(card)
+            insertPos.parentNode.insertBefore(newElement, insertPos);
         }
 
         function clickedStudy(){
@@ -69,22 +77,52 @@ permalink: /set
             window.location.assign(url);
         }
 
-        function editCard(button, ID){
-            console.log(button, ID)
+        function deleteSet(){
+            var doDelete = confirm("Are you sure tou want to delete this set?");
+            if(doDelete) {
+                db.removeSet(set.ID)
+                window.location.assign("../index.html");
+            }
+        }
+
+        function clickedAddButton(){
+            var newCard = db.addCardToSet(set.ID, "", "")
+            addOneEditCard(newCard, document.getElementById("add-button"))
         }
 
         
-        function deleteCard(button, ID){
-            console.log(button, ID)
+        function editCard(cardElement, cardID){
+            var card = db.getOneCardOfSet(set.ID, cardID)
+            addOneEditCard(card, cardElement);
+            cardElement.remove()
         }
 
-        function finishEditCard(button, ID){
-
+        
+        function deleteCard(cardElement, cardID){
+            var doDelete = confirm("Are you sure tou want to delete this card?");
+            if(doDelete) {
+                db.removeCardFromSet(set.ID, cardID)
+                cardElement.remove()
+            }
         }
 
-        function cancelEditCard(button, ID){
+        function finishEditCard(cardElement, cardID){
+            var cardPanes = cardElement.querySelectorAll(".card-pane")
 
+            var frontText = cardPanes[0].value
+            var backText = cardPanes[1].value            
+
+            var card = db.editCard(set.ID, cardID, frontText, backText)
+            addOneCard(card, cardElement);
+            cardElement.remove()
         }
+
+        function cancelEditCard(cardElement, cardID){
+            var card = db.getOneCardOfSet(set.ID, cardID)
+            addOneCard(card, cardElement);
+            cardElement.remove()
+        }
+
 
 
     </script>
